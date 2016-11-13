@@ -1,0 +1,25 @@
+{
+  "name": "follow-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnjones4/FollowBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnjones4/FollowBot/issues"
+  },
+  "homepage": "https://github.com/johnjones4/FollowBot#readme",
+  "dependencies": {
+    "kue": "^0.11.5",
+    "log4js": "^1.0.1",
+    "nodemailer": "^2.6.4",
+    "request": "^2.78.0"
+  }
+}
