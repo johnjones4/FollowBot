@@ -15,8 +15,13 @@ const URLBase = 'https://api.twitter.com/1.1/';
 var lastJobTime = 0;
 var users = config.users;
 
-const queue = kue.createQueue();
-kue.app.listen(3000);
+const queue = kue.createQueue({
+  'redis': {
+    'port': (process.env.REDIS_PORT || 6379),
+    'host': (process.env.REDIS_HOST || 'localhost'),
+  }
+});
+kue.app.listen(process.env.KUE_PORT || 3000);
 
 for(var userId in users) {
   users[userId].lastJobTime = 0;
