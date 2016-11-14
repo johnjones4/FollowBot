@@ -88,6 +88,7 @@ function processJob(job,done) {
         } else if (body.errors) {
           done(new Error(JSON.stringify(body.errors)));
         } else {
+          console.log(body);
           var usersToFollow = body.statuses.map(function(status) {
             return status.user;
           }).filter(function(user) {
@@ -152,6 +153,7 @@ function processJob(job,done) {
         } else if (body.errors) {
           done(new Error(JSON.stringify(body.errors)));
         } else {
+          console.log(body);
           if (!users[job.data.user].following) {
             users[job.data.user].following = [];
           }
@@ -182,6 +184,7 @@ function processJob(job,done) {
         if (err) {
           done(err);
         } else {
+          console.log(body);
           if (body.errors) {
             done(new Error(JSON.stringify(body.errors)));
           } else {
