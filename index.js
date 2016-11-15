@@ -115,7 +115,7 @@ function processJob(job,done) {
             'type': JobTypes.LISTFRIENDS,
             'user': job.data.user
           }).attempts(10000).save();
-          if (body.statuses.length > 0 && body.search_metadata && body.search_metadata.max_id) {
+          if (body.statuses.length > 0 && body.search_metadata && body.search_metadata.max_id && body.search_metadata.max_id > 0) {
             queue.create(JobName, {
               'title': 'Search for ' + job.data.user + ' (Previous ' + body.search_metadata.max_id + ')',
               'type': JobTypes.SEARCH,
@@ -123,7 +123,7 @@ function processJob(job,done) {
               'max_id': body.search_metadata.max_id
             }).attempts(10000).save();
           }
-          if (body.search_metadata && body.search_metadata.since_id) {
+          if (body.search_metadata && body.search_metadata.since_id && body.search_metadata.since_id > 0) {
             queue.create(JobName, {
               'title': 'Search for ' + job.data.user + ' (Next ' + body.search_metadata.since_id + ')',
               'type': JobTypes.SEARCH,
@@ -133,7 +133,7 @@ function processJob(job,done) {
           }
           if (body.statuses.length == 0) {
             queue.create(JobName, {
-              'title': 'Search for ' + job.data.user,
+              'title': 'Search for ' + job.data.user + ' (No new results)',
               'type': JobTypes.SEARCH,
               'user': job.data.user
             }).attempts(10000).save();
