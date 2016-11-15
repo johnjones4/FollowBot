@@ -29,7 +29,7 @@ for(var userId in users) {
     'title': 'Search for ' + userId,
     'type': JobTypes.SEARCH,
     'user': userId
-  }).attempts(10000).save();
+  }).attempts(5).save();
 }
 
 process.once('SIGTERM',function ( sig ) {
@@ -108,34 +108,34 @@ function processJob(job,done) {
               'type': JobTypes.FOLLOW,
               'user': job.data.user,
               'follow': user.id
-            }).attempts(10000).save();
+            }).attempts(5).save();
           });
           queue.create(JobName, {
             'title': 'Find friends for ' + job.data.user,
             'type': JobTypes.LISTFRIENDS,
             'user': job.data.user
-          }).attempts(10000).save();
+          }).attempts(5).save();
           if (body.statuses.length > 0 && body.search_metadata && body.search_metadata.max_id && body.search_metadata.max_id > 0) {
             queue.create(JobName, {
               'title': 'Search for ' + job.data.user + ' (Previous ' + body.search_metadata.max_id + ')',
               'type': JobTypes.SEARCH,
               'user': job.data.user,
               'max_id': body.search_metadata.max_id
-            }).attempts(10000).save();
+            }).attempts(5).save();
           }
           if (body.statuses.length == 0) {
             queue.create(JobName, {
               'title': 'Search for ' + job.data.user + ' (No new results)',
               'type': JobTypes.SEARCH,
               'user': job.data.user
-            }).attempts(10000).save();
+            }).attempts(5).save();
           } else {
             queue.create(JobName, {
               'title': 'Search for ' + job.data.user + ' (Next ' + body.statuses[0].id + ')',
               'type': JobTypes.SEARCH,
               'user': job.data.user,
               'since_id': body.statuses[0].id
-            }).attempts(10000).save();
+            }).attempts(5).save();
           }
           done();
         }
@@ -174,7 +174,7 @@ function processJob(job,done) {
               'type': JobTypes.LISTFRIENDS,
               'user': job.data.user,
               'cursor': body.next_cursor
-            }).attempts(10000).save();
+            }).attempts(5).save();
           }
           done();
         }
