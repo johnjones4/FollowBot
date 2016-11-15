@@ -123,19 +123,18 @@ function processJob(job,done) {
               'max_id': body.search_metadata.max_id
             }).attempts(10000).save();
           }
-          if (body.search_metadata && body.search_metadata.since_id && body.search_metadata.since_id > 0) {
-            queue.create(JobName, {
-              'title': 'Search for ' + job.data.user + ' (Next ' + body.search_metadata.since_id + ')',
-              'type': JobTypes.SEARCH,
-              'user': job.data.user,
-              'since_id': body.search_metadata.since_id
-            }).attempts(10000).save();
-          }
           if (body.statuses.length == 0) {
             queue.create(JobName, {
               'title': 'Search for ' + job.data.user + ' (No new results)',
               'type': JobTypes.SEARCH,
               'user': job.data.user
+            }).attempts(10000).save();
+          } else {
+            queue.create(JobName, {
+              'title': 'Search for ' + job.data.user + ' (Next ' + body.statuses[0].id + ')',
+              'type': JobTypes.SEARCH,
+              'user': job.data.user,
+              'since_id': body.statuses[0].id
             }).attempts(10000).save();
           }
           done();
@@ -182,7 +181,6 @@ function processJob(job,done) {
       });
       break;
     case JobTypes.FOLLOW:
-      done();
       request.post({
         'url': URLBase + 'friendships/create.json?' + querystring.stringify({'user_id':job.data.follow,'follow':true}),
         'oauth': users[job.data.user].oauth,
