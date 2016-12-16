@@ -2,6 +2,7 @@ const kue = require('kue');
 const request = require('request');
 const querystring = require('querystring');
 const config = require('./config');
+const blacklist = require('./blacklist');
 
 const JobName = 'followbot';
 const Delay = 60000;
@@ -95,7 +96,7 @@ function processJob(job,done) {
             if (!users[job.data.user].following) {
               users[job.data.user].following = [];
             }
-            if (users[job.data.user].following.indexOf(user.id) < 0) {
+            if (users[job.data.user].following.indexOf(user.id) < 0 && blacklist.indexOf(user.id) < 0) {
               users[job.data.user].following.push(user.id);
               return true;
             } else {
